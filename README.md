@@ -21,7 +21,10 @@ BUILDER
 The git server is used for package development and configuration.
 When a maintainer want to release a package, he push the code into a branch
 named: 
-> package_name-version
+```
+package_name-version
+```
+
 When this happen, the crawler is trigerred to launch a build.
 
 ## Crawler
@@ -59,11 +62,12 @@ quick overview.
 
 A Protocol must be defined in order for the different services to talk together.
 The protocol of the builder is a simple one, because the actions are limited:
-	- Build a package
-	- Start VM
-	- Stop VM
-	- Sanitize
-	- Launch a new installation on a VM
+
+- Build a package
+- Start VM
+- Stop VM
+- Sanitize
+- Launch a new installation on a VM
 
 The builder must execute the requested action, and then return a response.
 This Protocol can be a Text one, built on top of TCP.
@@ -79,7 +83,6 @@ and this install must be copied on the new VM.
 The clean install is generated via the associated command, in the protocol.
 
 # Code
-- OOP is kinda required for this
 - Threading
 - All test
 - Calling the mpm binary | using the mpm library
