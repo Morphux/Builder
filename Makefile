@@ -18,7 +18,7 @@ NAME=		builder
 CC =		gcc
 LIB =		-Llib
 CFLAGS =	-Wall -Wextra -Werror -Wno-unused-result \
-			-I inc -I lib/inc \
+			-Iinc -Ilib/inc \
 			-std=c99 -g -O3 \
 			-DVERSION="\"$(VERSION)\"" -DMAINTAINER="\"$(MAINTAINER)\"" -DNAME="\"$(NAME)\""
 LFLAGS =	-lmorphux
@@ -30,7 +30,7 @@ MAINTAINER = Jules HEZARD <hezardj@gmail.com>
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(LIB) $(LFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIB) $(LFLAGS)
 
 check:
 	make -C tests check
