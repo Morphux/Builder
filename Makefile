@@ -24,7 +24,7 @@ CFLAGS =	-Wall -Wextra -Werror -Wno-unused-result \
 LFLAGS =	-lmorphux
 SRCS =		$(wildcard src/*.c)
 OBJS =		$(SRCS:%.c=%.o)
-VERSION = 
+VERSION = 0.0.0.0
 MAINTAINER = Jules HEZARD <hezardj@gmail.com>
 
 all: $(NAME)
