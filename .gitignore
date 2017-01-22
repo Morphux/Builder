@@ -34,7 +34,7 @@
 
 # Test
 tests/test
-./builder
+builder
 
 # Documentation
 docs/doxygen_sqlite3.db
