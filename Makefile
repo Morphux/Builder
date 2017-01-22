@@ -29,7 +29,8 @@ MAINTAINER = Jules HEZARD <hezardj@gmail.com>
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) lib
+	make -C lib/
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIB) $(LFLAGS)
 
 check:

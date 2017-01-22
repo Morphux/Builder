@@ -1,7 +1,7 @@
 #include <morphux.h>
 
 TEST(main) {
-	int		i = 0;
+	int		i = 1;
 
 	TEST_ASSERT(i == 1, "Nope");
 	return TEST_SUCCESS;
