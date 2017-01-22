@@ -16,7 +16,7 @@
 # Install
 ### Clone the repository
 ```
-git clone https://github.com/Morphux/Builder.git
+git clone https://github.com/Morphux/Builder.git --recursive
 ```
 
 ### Compile
