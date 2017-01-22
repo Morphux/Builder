@@ -1,22 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builder.h                                          :+:      :+:    :+:   */
+/*   args.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jhezard <jhezard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/21 17:43:23 by jhezard           #+#    #+#             */
-/*   Updated: 2017/01/21 19:30:53 by jhezard          ###   ########.fr       */
+/*   Created: 2017/01/21 19:20:41 by jhezard           #+#    #+#             */
+/*   Updated: 2017/01/21 19:37:34 by jhezard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILDER_H
-# define BUILDER_H
+#include <builder.h>
 
-# define PID_FILE "/var/run/"NAME".pid"
-# define LOG_FILE "/var/log/"NAME".log"
-
-# include <morphux.h>
-# include <args.h>
-
-#endif /* BUILDER_H */

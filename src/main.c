@@ -6,49 +6,67 @@
 /*   By: jhezard <jhezard@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/21 17:04:29 by jhezard           #+#    #+#             */
-/*   Updated: 2017/01/21 18:04:29 by jhezard          ###   ########.fr       */
+/*   Updated: 2017/01/22 13:44:33 by jhezard          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <builder.h>
 
-void	force(const char *str) {
-	m_info("%s\n", str);
+#include <builder.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+
+
+void	nothing(const char *str) {
+	(void)str;
 }
 
-int		list_opt_free(void *tofree) {
-	opts_t		*tmp = tofree;
-	if (tofree)
-		free(tmp->str);
-	return 0;
+void	daemonize(void) {
+	pid_t	pid = 0, sid = 0;
+	int		ret = 0;
+
+	pid = fork();
+	if (pid < 0) {
+		m_panic("Fork failed\n");
+	} else if (pid > 0) {
+		FILE	*fp_pid;
+
+		if (!(fp_pid = fopen(PID_FILE, "w+"))) {
+			m_panic("Open of the PID file "PID_FILE" failed\n");
+		}
+		fprintf(fp_pid, "%d\n", pid);
+		m_info("PID of the child process is : %d\n", pid);
+		fclose(fp_pid);
+		_exit(0);
+	}
+
+	waitpid(pid, &ret, 0);
+	if (WEXITSTATUS(ret))
+		_exit(1);
+
+	/* Reseting default file permissions */
+	umask(0);
+
+	sid = setsid();
+	if (sid < 0)
+		m_panic("Setsid failed\n");
+
+	/* Closing all standard fd, we will not use it. */
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
 }
 
 int		main(int ac, char *av[]) {
 	margs_t		opts[] = {
-		{'f', "force", "Do not launch the program as a daemon.", false, &force},
+		{'f', "force", "Do not launch the program as a daemon.", false, &nothing},
 		ARGS_EOL
 	};
-	opts_t		*opts2;
-	opts_t		*opts_tmp = NULL;
-	mlist_t		*opt_lst = NULL;
-	mlist_t		*tmp_lst = NULL;
 
 	set_program_name(NAME);
 	set_version(VERSION);
 	set_maintainer(MAINTAINER);
 	read_opt(ac, av, opts);
 
-	opts2 = malloc(sizeof(opts_t));
-
-	opts2->force = true;
-	opts2->str = strdup("toto");
-	list_add(opt_lst, &opts2, sizeof(opts2));
-	free(opts2);
-
-	m_info("lstsize : %d\n", list_size(opt_lst));
-
-	list_for_each(opt_lst, tmp_lst, opts_tmp) {
-		m_info("bool : %d|%s\n", opts_tmp->force, opts_tmp->str);
-	}
-	list_free(opt_lst, &list_opt_free);
+	daemonize();
 	return 0;
 }

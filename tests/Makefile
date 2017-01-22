@@ -1,13 +1,13 @@
 NAME =		test
 CC =		gcc
-CFLAGS =	-Wall -Wextra -g -O3 -I../inc -lmorphux
+CFLAGS =	-Wall -Wextra -g -O3 -I../lib/inc -lmorphux
 SRCS =		$(wildcard *.c)
 OBJS =		$(SRCS:%.c=%.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L../ -lmorphux
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L../lib/ -lmorphux
 
 check: $(NAME)
 	./$(NAME)
