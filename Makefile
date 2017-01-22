@@ -24,7 +24,7 @@ CFLAGS =	-Wall -Wextra -Werror -Wno-unused-result \
 LFLAGS =	-lmorphux
 SRCS =		$(wildcard src/*.c)
 OBJS =		$(SRCS:%.c=%.o)
-VERSION = 0.0.0.0
+VERSION = 	git_$(shell git branch | sed -n -e 's/^\* \(.*\)/\1/p')-$(shell git rev-parse --verify HEAD)
 MAINTAINER = Jules HEZARD <hezardj@gmail.com>
 
 all: $(NAME)
