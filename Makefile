@@ -29,18 +29,27 @@ MAINTAINER = Jules HEZARD <hezardj@gmail.com>
 
 all: $(NAME)
 
-$(NAME): $(OBJS) lib
+$(NAME): $(OBJS)
 	make -C lib/
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIB) $(LFLAGS)
 
-check:
+check: all
 	make -C tests check
+
+coverage:
+	$(MAKE) fclean all CFLAGS="-Wall -Wextra -Werror -Wno-unused-result -Iinc -Ilib/inc -std=c99 -g -O0 -coverage -lgcov"
+	make -C tests re check
+	gcov -o src/ $(SRCS)
 
 doc:
 	doxygen docs/doxyfile
 
 clean:
 	rm -f $(OBJS)
+	rm -f *.gcov
+	rm -f src/*.gcno
+	rm -f src/*.gcda
+
 
 fclean: clean
 	rm -f $(NAME)
