@@ -4,9 +4,27 @@ compiler: gcc
 before_install:
     - sudo apt-get -qq update
     - sudo apt-get install -y valgrind lcov
+    - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
 script:
     - make
     - make -C tests
     - make -C tests check
     - make -C tests valgrind
+    - make coverage
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+env:
+  global:
+   - secure: "XLzDmIuNN2kHiPy14TT6hyvcLS7rCdAeaAMdam7UkzOZ9qHWk59q3i9mW96tojz4PtlkEd3WgWqt8NGKcwprS6+KMdpyYGwBKUgVqlUYBqrv9APC3n4pfn8wUiEYklcmB/7kXX3my+m+sE2+hNkkVGPNTmun4eu43gCObdh44r/heHaFblLj791xiNBAI2rJ8UsI66kDTIyZ/XeefsvTk2HJY9Aaqbj7zjNbTRmQL8n0DQdodfCb7+WkXiEzxl05iaC+im5FQVEmFEXEp5OdXqJQstpd576bY2gNPDeOJMJOiQ1aZq0HWHYrz2C51PKReZMiYUDsCSwHsCDp4wQMW04pCiM8SWqrqZkOrZyOkHtqbfZhpjaaUtO0YJjwBrIgwOasUi9wcPjcsqvznBomJz8asMwgkuee4xBNgeBEYknECAUpekQ9mGD+Gg61sGkrTEJ2a269x1sTil3zIydeQSV65yC3bJzRIVmce8W3GXt8HVnCOrvSL462xRQKoxsjqpgkGffmiq4Zyj508nxfNfWaBA3eFRVTPPYR02TxGGaiEqqSHyc4GvLqaI/rqsF8VU5VdN5I/iLBWfwb7DFOvcunFXCwpGzmuzKXEp/WDga2UKVU7agxn0UESz3XfkozzF4ZvgZQcqyrmDxux8Rcr+oTsdRGsCXwqkvyIGLcP2Q="
+
+
+addons:
+    coverity_scan:
+        project:
+            name: "Morphux/Builder"
+        notification_email: louis@ne02ptzero.me
+        build_command:   "make check"
+        branch_pattern: master
