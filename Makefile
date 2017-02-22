@@ -1,5 +1,5 @@
 ################################# LICENSE ####################################
-#                            Copyright 2016 Morphux                            #
+#                            Copyright 2017 Morphux                            #
 #                                                                              #
 #        Licensed under the Apache License, Version 2.0 (the "License");       #
 #        you may not use this file except in compliance with the License.      #
