@@ -17,13 +17,17 @@
 #ifndef ARGS_H
 # define ARGS_H
 
-typedef struct		s_opts {
-	bool			verbose;
-	bool			detach;
-	bool			quiet;
-	u32_t			port;
-	char			*pid_file;
-}					opts_t;
+typedef struct      s_flags {
+    bool            verbose;
+    bool            nofork;
+    bool            quiet;
+    u32_t           port;
+    char            *pid_file;
+    char            *log_file;
+}                   flags_t;
 
+flags_t g_flags;
+
+void    nofork(const char *str);
 
 #endif /* ARGS_H */

@@ -1,4 +1,4 @@
-/*********************************** LICENSE **********************************\
+/***********************************LICENSE **********************************\
 *                            Copyright 2017 Morphux                            *
 *                                                                              *
 *        Licensed under the Apache License, Version 2.0 (the "License");       *
@@ -16,3 +16,7 @@
 
 #include <builder.h>
 
+void    nofork(const char *str) {
+    (void)str;
+    g_flags.nofork = true;
+}
