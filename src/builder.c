@@ -63,13 +63,6 @@ static void daemonize(void) {
         m_panic("Can't close STDERR : %s\n", strerror(errno));
 }
 
-static void usage(void) {
-    fprintf(STDERR_FILENO,
-"usage : builder [-nd] [-D debug-level] [-P port_number]\n"
-"                [-p pidfile] [-l logfile]"
-    )
-}
-
 int main(int ac, char *av[]) {
     /*Declare struct containing all possible optionnal parameters*/
     mopts_t     opts[] = {
