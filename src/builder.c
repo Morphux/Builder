@@ -14,12 +14,15 @@
 *                       limitations under the License.                         *
 \******************************************************************************/
 
-#include <builder.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <builder.h>
+#include <args.h>
 
+/* Bullshint function for callback, until i know what to do for some options */
 void    nothing(const char *str) {
+    g_flags.port = 100;
     (void)str;
 }
 
@@ -60,14 +63,22 @@ static void daemonize(void) {
         m_panic("Can't close STDERR : %s\n", strerror(errno));
 }
 
-int     main(int ac, char *av[]) {
+static void usage(void) {
+    fprintf(STDERR_FILENO,
+"usage : builder [-nd] [-D debug-level] [-P port_number]\n"
+"                [-p pidfile] [-l logfile]"
+    )
+}
+
+int main(int ac, char *av[]) {
     /*Declare struct containing all possible optionnal parameters*/
     mopts_t     opts[] = {
-        {'n', "nofork", "Do not fork.", false, &nofork},
-        {'d', "debug-level", "Increase the debug level.", false, &nothing},
-        {'D', "set-debug-level", "Set the debug level.", true, &nothing},
-        {'p', "port", "Specify port to listen on.", true, &nothing},
-        {'l', "logfile", "Append log info to specific file.", false, &nothing},
+        {'n', "nofork", "[No] Do not fork.", false, &nofork},
+        {'d', "debug-level", "[No] Increase the debug level.", false, &nothing},
+        {'D', "set-debug-level", "[Int] Set the debug level.", true, &nothing},
+        {'P', "port", "[Int] Specify port to listen on.", true, &listen_port},
+        {'p', "pidfile", "[Str] Path to the pid file.", true, &pidfile},
+        {'l', "logfile", "[Str] Path to the log file.", true, &logfile},
         ARGS_EOL
     };
     mlist_t     *params;
@@ -77,11 +88,18 @@ int     main(int ac, char *av[]) {
     set_version(VERSION);
     set_maintainer(MAINTAINER);
 
+    /* Initialize default flags */
+    g_flags.verbose = 0;
+    g_flags.daemonize = true;
+    g_flags.port = 6694;
+    g_flags.pid_file = NULL;
+    g_flags.log_file = NULL;
+
     /*Read all options passed in parameters*/
     read_opt(ac, av, opts, &params);
 
     /*Daemonize the process unless option "nofork" is passed*/
-    if (!g_flags.nofork)
+    if (g_flags.daemonize == true)
         daemonize();
 
     return 0;

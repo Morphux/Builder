@@ -18,16 +18,46 @@
 # define ARGS_H
 
 typedef struct      s_flags {
-    bool            verbose;
-    bool            nofork;
+    /**
+     * Flag for verbose, can be incremented
+     * to increase the level of verbosity
+     * Default: 0
+     */
+    char            verbose;
+
+    /**
+     * Flag that will define if we have to
+     * daemonize the process.
+     * Default: true
+     */
+    bool            daemonize;
     bool            quiet;
+
+    /**
+     * Flag that will define the port
+     * to listen on.
+     * Default: 6694
+     */
     u32_t           port;
+
+    /**
+     * Path of the specified log file, if defined
+     * Default: NULL
+     */
     char            *pid_file;
+
+    /**
+     * Path of the specifiedd PID file, if defined
+     * Default: NULL
+     */
     char            *log_file;
 }                   flags_t;
 
 flags_t g_flags;
 
 void    nofork(const char *str);
+void    logfile(const char *str);
+void    pidfile(const char *str);
+void    listen_port(const char *str);
 
 #endif /* ARGS_H */

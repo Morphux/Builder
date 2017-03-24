@@ -15,8 +15,21 @@
 \******************************************************************************/
 
 #include <builder.h>
+#include <args.h>
 
 void    nofork(const char *str) {
     (void)str;
-    g_flags.nofork = true;
+    g_flags.daemonize = false;
+}
+
+void    logfile(const char *str) {
+    g_flags.log_file = strdup(str);
+}
+
+void    pidfile(const char *str) {
+    g_flags.pid_file = strdup(str);
+}
+
+void    listen_port(const char *str) {
+    g_flags.port = (u32_t)atoi(str);
 }
