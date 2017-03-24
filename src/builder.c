@@ -22,7 +22,6 @@
 
 /* Bullshint function for callback, until i know what to do for some options */
 void    nothing(const char *str) {
-    g_flags.port = 100;
     (void)str;
 }
 
@@ -36,7 +35,7 @@ static void daemonize(void) {
     } else if (pid > 0) {
         FILE    *fp_pid;
         if (!(fp_pid = fopen(PID_FILE, "w+"))) {
-            m_panic("%s\n", strerror(errno));
+            m_panic("fopen failed to open %s: %s\n", PID_FILE, strerror(errno));
         }
         fprintf(fp_pid, "%d\n", pid);
         m_info("PID of the child process is : %d\n", pid);
@@ -50,9 +49,9 @@ static void daemonize(void) {
 /* Orphan process */
     sid = setsid();
     if (sid < 0)
-        m_panic("%s\n", strerror(errno));
+        m_panic("Setsid failed: %s\n", strerror(errno));
     if (!(devnull = open("/dev/null", O_WRONLY)))
-        m_panic("%s\n", strerror(errno));
+        m_panic("Open failed: %s\n", strerror(errno));
 
 /* Closing all standard fd, we will not use it. */
     if (dup2(STDIN_FILENO, devnull) == -1)
@@ -66,34 +65,31 @@ static void daemonize(void) {
 int main(int ac, char *av[]) {
     /*Declare struct containing all possible optionnal parameters*/
     mopts_t     opts[] = {
-        {'n', "nofork", "[No] Do not fork.", false, &nofork},
+        {'n', "nofork", "[No] Do not fork.", false, &flags_set_nofork},
         {'d', "debug-level", "[No] Increase the debug level.", false, &nothing},
         {'D', "set-debug-level", "[Int] Set the debug level.", true, &nothing},
-        {'P', "port", "[Int] Specify port to listen on.", true, &listen_port},
-        {'p', "pidfile", "[Str] Path to the pid file.", true, &pidfile},
-        {'l', "logfile", "[Str] Path to the log file.", true, &logfile},
+        {'P', "port", "[Int] Specify port to listen on.", true, &flags_set_listen_port},
+        {'p', "pidfile", "[Str] Path to the pid file.", true, &flags_set_pidfile},
+        {'l', "logfile", "[Str] Path to the log file.", true, &flags_set_logfile},
         ARGS_EOL
     };
     mlist_t     *params;
 
-    /*Set program informations*/
+    /* Set program informations */
     set_program_name(NAME);
     set_version(VERSION);
     set_maintainer(MAINTAINER);
 
     /* Initialize default flags */
-    g_flags.verbose = 0;
-    g_flags.daemonize = true;
-    g_flags.port = 6694;
-    g_flags.pid_file = NULL;
-    g_flags.log_file = NULL;
+    flags_init();
 
-    /*Read all options passed in parameters*/
+    /* Read all options passed in parameters */
     read_opt(ac, av, opts, &params);
 
-    /*Daemonize the process unless option "nofork" is passed*/
-    if (g_flags.daemonize == true)
+    /* Daemonize the process unless option "nofork" is passed */
+    if (flags_get_nofork() == true)
         daemonize();
 
+    flags_cleanup();
     return 0;
 }
