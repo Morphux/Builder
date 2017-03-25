@@ -53,7 +53,7 @@ typedef struct      s_flags {
     char            *log_file;
 }                   flags_t;
 
-flags_t g_flags;
+static flags_t g_flags;
 
 void    nofork(const char *str);
 void    logfile(const char *str);

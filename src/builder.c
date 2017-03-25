@@ -64,7 +64,7 @@ static void daemonize(void) {
 }
 
 int main(int ac, char *av[]) {
-    /*Declare struct containing all possible optionnal parameters*/
+    /* Declare struct containing all possible optionnal parameters */
     mopts_t     opts[] = {
         {'n', "nofork", "[No] Do not fork.", false, &nofork},
         {'d', "debug-level", "[No] Increase the debug level.", false, &nothing},
@@ -76,7 +76,7 @@ int main(int ac, char *av[]) {
     };
     mlist_t     *params;
 
-    /*Set program informations*/
+    /* Set program informations */
     set_program_name(NAME);
     set_version(VERSION);
     set_maintainer(MAINTAINER);
@@ -88,10 +88,11 @@ int main(int ac, char *av[]) {
     g_flags.pid_file = NULL;
     g_flags.log_file = NULL;
 
-    /*Read all options passed in parameters*/
+    /* Read all options passed in parameters */
     read_opt(ac, av, opts, &params);
+    m_info("%d\n", g_flags.port);
 
-    /*Daemonize the process unless option "nofork" is passed*/
+    /* Daemonize the process unless option "nofork" is passed */
     if (g_flags.daemonize == true)
         daemonize();
 
