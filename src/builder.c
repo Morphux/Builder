@@ -86,7 +86,6 @@ int main(int ac, char *av[]) {
 
     /* Read all options passed in parameters */
     read_opt(ac, av, opts, &params);
-    m_info("%d\n", g_flags.port);
 
     /* Daemonize the process unless option "nofork" is passed */
     if (flags_get_nofork() == true)
