@@ -25,7 +25,7 @@ void    nothing(const char *str) {
     (void)str;
 }
 
-static void daemonize(void) {
+MPX_STATIC void daemonize(void) {
     pid_t   pid = 0, sid = 0;
     int     devnull = 0;
 
@@ -62,6 +62,7 @@ static void daemonize(void) {
         m_panic("Can't close STDERR : %s\n", strerror(errno));
 }
 
+#ifndef COMPILE_WITH_TEST
 int main(int ac, char *av[]) {
     /*Declare struct containing all possible optionnal parameters*/
     mopts_t     opts[] = {
@@ -93,3 +94,4 @@ int main(int ac, char *av[]) {
     flags_cleanup();
     return 0;
 }
+#endif /* COMPILE_WITH_TEST */

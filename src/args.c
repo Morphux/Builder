@@ -66,6 +66,8 @@ void flags_init(void) {
 void flags_cleanup(void) {
     free(g_flags.pid_file);
     free(g_flags.log_file);
+    g_flags.pid_file = NULL;
+    g_flags.log_file = NULL;
 }
 
 void flags_set_nofork(const char *str) {
@@ -102,4 +104,14 @@ void flags_set_listen_port(const char *str) {
 
 u32_t flags_get_port(void) {
     return g_flags.port;
+}
+
+void flags_set_verbose(const char *str) {
+    (void)str;
+    if (g_flags.verbose < FLAGS_VERBOSE_MAX)
+        g_flags.verbose++;
+}
+
+u8_t flags_get_verbose(void) {
+    return g_flags.verbose;
 }

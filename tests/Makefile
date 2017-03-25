@@ -16,13 +16,16 @@
 
 NAME =		test
 CC =		gcc
-CFLAGS =	-Wall -Wextra -Wno-unused-result -g -O3 -I../lib/inc -lmorphux
-SRCS =		$(wildcard *.c)
+CFLAGS =	-Wall -Wextra -Wno-unused-result -g -O3 -I../lib/inc -I../inc -lmorphux -DCOMPILE_WITH_TEST
+SRCS =		$(wildcard *.c) $(wildcard ../src/*.c)
 OBJS =		$(SRCS:%.c=%.o)
+OSTYPE =	$(shell uname)
+COVFLAGS =	"-coverage -lgcov"
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
+	make -C ../lib test
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L../lib/ -lmorphux
 
 check: $(NAME)
@@ -30,6 +33,10 @@ check: $(NAME)
 
 valgrind: $(NAME)
 	valgrind --leak-check=full --error-exitcode=1 ./$(NAME)
+
+coverage:
+	$(MAKE) fclean all CFLAGS="$(CFLAGS) $(COVFLAGS)"
+	./$(NAME)
 
 clean:
 	rm -f $(OBJS)

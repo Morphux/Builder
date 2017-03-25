@@ -17,6 +17,8 @@
 #ifndef ARGS_H
 # define ARGS_H
 
+# define FLAGS_VERBOSE_MAX 3
+
 void flags_init(void);
 void flags_cleanup(void);
 void flags_set_nofork(const char *str);
@@ -27,5 +29,7 @@ void flags_set_pidfile(const char *str);
 const char *flags_get_pidfile(void);
 void flags_set_listen_port(const char *str);
 u32_t flags_get_port(void);
+void flags_set_verbose(const char *str);
+u8_t flags_get_verbose(void);
 
 #endif /* ARGS_H */
