@@ -23,10 +23,13 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <errno.h>
+# include <builder.h>
 
 # define DUP_ALL_OUTPUTS(name) dup2(name[1], 1); dup2(name[1], 2); close(name[1]);
 # define WAIT_AND_CLOSE(pid, status, fd) pid = waitpid(pid, &status, 0); close(fd[1]);
 
 # define BIN "../builder"
+
+void register_args_test(void);
 
 #endif /* TEST_H */

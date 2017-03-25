@@ -33,6 +33,7 @@
 # define LOG_FILE "/var/log/"NAME".log"
 
 # include <morphux.h>
+# include <args.h>
 # include <errno.h>
 
 #endif /* BUILDER_H */
