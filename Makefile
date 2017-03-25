@@ -33,9 +33,6 @@ $(NAME): $(OBJS)
 	make -C lib/
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIB) $(LFLAGS)
 
-check: all
-	make -C tests fclean coverage check
-
 coverage:
 	make -C tests fclean coverage
 	gcov -o src/ $(SRCS)

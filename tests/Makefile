@@ -25,7 +25,7 @@ COVFLAGS =	"-coverage -lgcov"
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	make -C ../lib test
+	make -C ../lib clean test
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L../lib/ -lmorphux
 
 check: $(NAME)
