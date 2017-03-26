@@ -70,46 +70,53 @@ void flags_cleanup(void) {
     g_flags.log_file = NULL;
 }
 
-void flags_set_nofork(const char *str) {
+bool flags_set_nofork(const char *str) {
     (void)str;
     g_flags.daemonize = false;
+    return true;
 }
 
 bool flags_get_nofork(void) {
     return g_flags.daemonize;
 }
 
-void flags_set_logfile(const char *str) {
+bool flags_set_logfile(const char *str) {
     if (str != NULL)
         g_flags.log_file = strdup(str);
+    return true;
 }
 
 const char *flags_get_logfile(void) {
     return g_flags.log_file;
 }
 
-void flags_set_pidfile(const char *str) {
+bool flags_set_pidfile(const char *str) {
     if (str != NULL)
         g_flags.pid_file = strdup(str);
+    return true;
 }
 
 const char *flags_get_pidfile(void) {
     return g_flags.pid_file;
 }
 
-void flags_set_listen_port(const char *str) {
+bool flags_set_listen_port(const char *str) {
     if (str != NULL)
         g_flags.port = strtoull(str, (char **)NULL, 10);
+    if (g_flags.port == 0)
+        return false;
+    return true;
 }
 
 u32_t flags_get_port(void) {
     return g_flags.port;
 }
 
-void flags_set_verbose(const char *str) {
+bool flags_set_verbose(const char *str) {
     (void)str;
     if (g_flags.verbose < FLAGS_VERBOSE_MAX)
         g_flags.verbose++;
+    return true;
 }
 
 u8_t flags_get_verbose(void) {

@@ -21,8 +21,9 @@
 #include <args.h>
 
 /* Bullshint function for callback, until i know what to do for some options */
-void    nothing(const char *str) {
+bool nothing(const char *str) {
     (void)str;
+    return true;
 }
 
 MPX_STATIC void daemonize(void) {
@@ -43,17 +44,17 @@ MPX_STATIC void daemonize(void) {
         exit(0);
     }
 
-/* Reseting default file permissions */
+    /* Reseting default file permissions */
     umask(0);
 
-/* Orphan process */
+    /* Orphan process */
     sid = setsid();
     if (sid < 0)
         m_panic("Setsid failed: %s\n", strerror(errno));
     if (!(devnull = open("/dev/null", O_WRONLY)))
         m_panic("Open failed: %s\n", strerror(errno));
 
-/* Closing all standard fd, we will not use it. */
+    /* Closing all standard fd, we will not use it. */
     if (dup2(STDIN_FILENO, devnull) == -1)
         m_panic("Can't close STDIN : %s\n", strerror(errno));
     if (dup2(STDOUT_FILENO, devnull) == -1)
@@ -65,16 +66,58 @@ MPX_STATIC void daemonize(void) {
 #ifndef COMPILE_WITH_TEST
 int main(int ac, char *av[]) {
     /* Declare struct containing all possible optionnal parameters */
-    mopts_t     opts[] = {
-        {'n', "nofork", "[No] Do not fork.", false, &flags_set_nofork},
-        {'d', "debug-level", "[No] Increase the debug level.", false, &nothing},
-        {'D', "set-debug-level", "[Int] Set the debug level.", true, &nothing},
-        {'P', "port", "[Int] Specify port to listen on.", true, &flags_set_listen_port},
-        {'p', "pidfile", "[Str] Path to the pid file.", true, &flags_set_pidfile},
-        {'l', "logfile", "[Str] Path to the log file.", true, &flags_set_logfile},
+    static const mopts_t     opts[] = {
+        {
+            .opt = 'n',
+            .s_opt = "nofork",
+            .desc = "Do not fork",
+            .callback = &flags_set_nofork
+        },
+        {
+            .opt = 'd',
+            .desc = "Increase the debug level",
+            .callback = &nothing
+        },
+        {
+            .opt = 'D',
+            .s_opt = "set-debug-level",
+            .desc = "Set the debug level",
+            .take_arg = true,
+            .callback = &nothing,
+            .usage = "[1-3]"
+        },
+        {
+            .opt = 'P',
+            .s_opt = "port",
+            .desc = "Specify port to listen on",
+            .take_arg = true,
+            .callback = &flags_set_listen_port,
+            .usage = "PORT"
+        },
+        {
+            .opt = 'p',
+            .s_opt = "pidfile",
+            .desc = "Path to the pid file",
+            .take_arg = true,
+            .callback = &flags_set_pidfile,
+            .usage = "PID_FILE"
+        },
+        {
+            .opt = 'l',
+            .s_opt = "logfile",
+            .desc = "Path to the log file",
+            .take_arg = true,
+            .callback = &flags_set_logfile,
+            .usage = "LOG_FILE"
+        },
+        {
+            .opt = 'v',
+            .desc = "Increase the verbose level (Up to 3)",
+            .callback = &flags_set_verbose
+        },
         ARGS_EOL
     };
-    mlist_t     *params;
+    mlist_t     *params = NULL;
 
     /* Set program informations */
     set_program_name(NAME);
