@@ -35,7 +35,7 @@ $(NAME): $(OBJS)
 
 coverage:
 	make -C tests fclean coverage
-	gcov -o src/ $(SRCS)
+	gcov -o src/ src/args.c
 
 doc:
 	doxygen docs/doxyfile
