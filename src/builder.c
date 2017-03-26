@@ -20,23 +20,24 @@
 #include <builder.h>
 #include <args.h>
 
-/* Bullshint function for callback, until i know what to do for some options */
-bool nothing(const char *str) {
-    (void)str;
-    return true;
-}
+#ifndef COMPILE_WITH_TEST
 
-MPX_STATIC void daemonize(void) {
-    pid_t   pid = 0, sid = 0;
-    int     devnull = 0;
+static void daemonize(void) {
+    pid_t         pid = 0, sid = 0;
+    int           devnull = 0;
+    const char    *pid_file = PID_FILE;
+
+    if (flags_get_pidfile() != NULL)
+        pid_file = flags_get_pidfile();
 
     pid = fork();
     if (pid < 0) {
         m_panic("%s\n", strerror(errno));
     } else if (pid > 0) {
         FILE    *fp_pid;
-        if (!(fp_pid = fopen(PID_FILE, "w+"))) {
-            m_panic("fopen failed to open %s: %s\n", PID_FILE, strerror(errno));
+
+        if (!(fp_pid = fopen(pid_file, "w+"))) {
+            m_panic("fopen failed to open %s: %s\n", pid_file, strerror(errno));
         }
         fprintf(fp_pid, "%d\n", pid);
         m_info("PID of the child process is : %d\n", pid);
@@ -63,7 +64,6 @@ MPX_STATIC void daemonize(void) {
         m_panic("Can't close STDERR : %s\n", strerror(errno));
 }
 
-#ifndef COMPILE_WITH_TEST
 int main(int ac, char *av[]) {
     /* Declare struct containing all possible optionnal parameters */
     static const mopts_t     opts[] = {
@@ -76,14 +76,12 @@ int main(int ac, char *av[]) {
         {
             .opt = 'd',
             .desc = "Increase the debug level",
-            .callback = &nothing
         },
         {
             .opt = 'D',
             .s_opt = "set-debug-level",
             .desc = "Set the debug level",
             .take_arg = true,
-            .callback = &nothing,
             .usage = "[1-3]"
         },
         {
