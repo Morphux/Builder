@@ -33,13 +33,9 @@ $(NAME): $(OBJS)
 	make -C lib/
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIB) $(LFLAGS)
 
-check: all
-	make -C tests check
-
 coverage:
-	$(MAKE) fclean all CFLAGS="-Wall -Wextra -Werror -Wno-unused-result -Iinc -Ilib/inc -std=c99 -g -O0 -coverage -lgcov"
-	make -C tests re check
-	gcov -o src/ $(SRCS)
+	make -C tests fclean coverage
+	gcov -o src/ src/args.c
 
 doc:
 	doxygen docs/doxyfile

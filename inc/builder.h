@@ -34,5 +34,6 @@
 
 # include <morphux.h>
 # include <args.h>
+# include <errno.h>
 
 #endif /* BUILDER_H */

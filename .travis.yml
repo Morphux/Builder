@@ -8,10 +8,10 @@ before_install:
 
 script:
     - make
-    - make -C tests
-    - make -C tests check
-    - make -C tests valgrind
+    - make fclean
+    - make -C lib/ clean
     - make coverage
+    - make -C tests valgrind
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

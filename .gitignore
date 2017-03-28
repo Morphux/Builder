@@ -45,3 +45,6 @@ builder
 docs/doxygen_sqlite3.db
 docs/html
 docs/man
+
+# Gdb
+*.gdb_history

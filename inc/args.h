@@ -17,13 +17,19 @@
 #ifndef ARGS_H
 # define ARGS_H
 
-typedef struct		s_opts {
-	bool			verbose;
-	bool			detach;
-	bool			quiet;
-	u32_t			port;
-	char			*pid_file;
-}					opts_t;
+# define FLAGS_VERBOSE_MAX 3
 
+void flags_init(void);
+void flags_cleanup(void);
+bool flags_set_nofork(const char *str);
+bool flags_get_nofork(void);
+bool flags_set_logfile(const char *str);
+const char *flags_get_logfile(void);
+bool flags_set_pidfile(const char *str);
+const char *flags_get_pidfile(void);
+bool flags_set_listen_port(const char *str);
+u32_t flags_get_port(void);
+bool flags_set_verbose(const char *str);
+u8_t flags_get_verbose(void);
 
 #endif /* ARGS_H */
