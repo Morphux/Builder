@@ -4,7 +4,7 @@ TEST(flags_init) {
     flags_init();
     TEST_ASSERT(flags_get_verbose() == 0, "Value is wrong");
     TEST_ASSERT(flags_get_nofork() == true, "Value is wrong");
-    TEST_ASSERT(flags_get_port() == 6694, "Value is wrong")
+    TEST_ASSERT(flags_get_port() == 5982, "Value is wrong")
     TEST_ASSERT(flags_get_logfile() == NULL, "Value is wrong");
     TEST_ASSERT(flags_get_pidfile() == NULL, "Value is wrong");
     return TEST_SUCCESS;

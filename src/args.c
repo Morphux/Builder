@@ -36,7 +36,7 @@ typedef struct flags_s {
     /**
      * Flag that will define the port
      * to listen on.
-     * Default: 6694
+     * Default: 5982
      */
     u32_t           port;
 
@@ -58,7 +58,7 @@ static flags_t g_flags;
 void flags_init(void) {
     g_flags.verbose = 0;
     g_flags.daemonize = true;
-    g_flags.port = 6694;
+    g_flags.port = 5982;
     g_flags.pid_file = NULL;
     g_flags.log_file = NULL;
 }
