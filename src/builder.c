@@ -18,6 +18,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <builder.h>
+#include <launch_server.h>
 #include <args.h>
 
 #ifndef COMPILE_WITH_TEST
@@ -132,6 +133,7 @@ int main(int ac, char *av[]) {
     if (flags_get_nofork() == true)
         daemonize();
 
+    launch_server();
     flags_cleanup();
     return 0;
 }
