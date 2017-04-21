@@ -14,6 +14,7 @@
 *                       limitations under the License.                         *
 \******************************************************************************/
 
+#include <builder.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -22,13 +23,12 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
-#include <builder.h>
 #include <args.h>
 
 #define BACKLOG 10 /* How many pending connection we will keep in queue */
 
 void launch_server(void) {
-    int             sockfd,     /* Read on this one */
+    int             sockfd = 0, /* Read on this one */
                     rval;       /* To stock getaddrinfo() return */
     s8_t            enable = 1; /* Int to enable the option in setsockopt */
     struct addrinfo hints,      /* Flags of getaddrinfo() */
@@ -36,7 +36,7 @@ void launch_server(void) {
                     *ptr;        /* Variable used to loop into the linked lst*/
     char            port_str[6]; /* Buffer to hold the port number */
 
-    bzero(&hints, sizeof hints);
+    memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;     /* Don't care IPv4 and IPv6 */
     hints.ai_socktype = SOCK_STREAM; /* Use TCP stream socket */
 
