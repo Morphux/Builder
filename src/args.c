@@ -31,6 +31,12 @@ typedef struct flags_s {
      * Default: true
      */
     bool            daemonize;
+
+    /**
+     * If defined, don't output anything.
+     * Overrides all logging and output flags
+     * Default: false
+     */
     bool            quiet;
 
     /**
@@ -41,13 +47,13 @@ typedef struct flags_s {
     u32_t           port;
 
     /**
-     * Path of the specified log file, if defined
+     * Path of the specified log file, if defined.
      * Default: NULL
      */
     char            *pid_file;
 
     /**
-     * Path of the specifiedd PID file, if defined
+     * Path of the specifiedd PID file, if defined.
      * Default: NULL
      */
     char            *log_file;

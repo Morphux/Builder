@@ -29,8 +29,10 @@
 #define BACKLOG 10 /* How many pending connection we will keep in queue */
 
 // get sockaddr, IPv4 or IPv6:
-void *get_in_addr(struct sockaddr *sa)
+static void *get_in_addr(struct sockaddr *sa)
 {
+    if (!sa)
+        return NULL;
     if (sa->sa_family == AF_INET)
     {
         return &(((struct sockaddr_in*)sa)->sin_addr);
@@ -43,7 +45,7 @@ void launch_server(void) {
     int             sockfd = 0,  /* Read on this one */
                     rem_fd = 0,  /* Fd that will be attributed to the client */
                     rval;        /* To stock getaddrinfo() return */
-    s8_t            enable = 1;  /* Int to enable the option in setsockopt */
+    u8_t            enable = 1;  /* Int to enable the option in setsockopt */
     struct addrinfo hints,       /* Flags of getaddrinfo() */
                     *servinfo,   /* Result of getaddrinfo() */
                     *ptr;        /* Variable used to loop into the linked lst*/
@@ -54,7 +56,7 @@ void launch_server(void) {
 
     char                    str[INET6_ADDRSTRLEN];
 
-    memset(&hints, 0, sizeof hints);
+    memset(&hints, 0, sizeof(hints));
     hints.ai_family = AF_UNSPEC;     /* Don't care IPv4 and IPv6 */
     hints.ai_socktype = SOCK_STREAM; /* Use TCP stream socket */
 
@@ -82,7 +84,8 @@ void launch_server(void) {
         if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &enable, 
             sizeof(int)) == 1)
         {
-            /* If it fails, display the error and exit */
+            /* If it fails, cleanup, display the error and exit */
+            freeaddrinfo(servinfo);
             m_panic("Server: socket %s" , strerror(errno));
         }
         /* If we got here, try to bind to the socket */
@@ -126,7 +129,7 @@ void launch_server(void) {
             continue ;
         }
         inet_ntop(rem_addr.ss_family, get_in_addr((struct sockaddr *)&rem_addr),
-                    str, sizeof str);
+                    str, sizeof(str));
         m_info("Server: Got connection from %s\n", str);
     }
 }
