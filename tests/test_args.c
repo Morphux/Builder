@@ -32,7 +32,8 @@ TEST(flags_logfile) {
     flags_cleanup();
     TEST_ASSERT(flags_get_logfile() == NULL, "Return value is wrong");
     flags_set_logfile("Something");
-    TEST_ASSERT(strcmp(flags_get_logfile(), "Something") == 0, "Return value is wrong");
+    TEST_ASSERT(strcmp(flags_get_logfile(), "Something") == 0,
+                    "Return value is wrong");
     return TEST_SUCCESS;
 }
 
@@ -40,7 +41,8 @@ TEST(flags_pidfile) {
     flags_cleanup();
     TEST_ASSERT(flags_get_pidfile() == NULL, "Return value is wrong");
     flags_set_pidfile("Something");
-    TEST_ASSERT(strcmp(flags_get_pidfile(), "Something") == 0, "Return value is wrong");
+    TEST_ASSERT(strcmp(flags_get_pidfile(), "Something") == 0,
+                    "Return value is wrong");
     return TEST_SUCCESS;
 }
 
