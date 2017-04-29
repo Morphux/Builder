@@ -40,6 +40,8 @@ coverage:
 
 clean:
 	rm -f $(OBJS)
+	rm -f *.gcda
+	rm -f *.gcno
 
 fclean: clean
 	rm -f $(NAME)
