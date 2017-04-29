@@ -53,7 +53,7 @@ typedef struct flags_s {
     char            *pid_file;
 
     /**
-     * Path of the specifiedd PID file, if defined.
+     * Path of the specified PID file, if defined.
      * Default: NULL
      */
     char            *log_file;
