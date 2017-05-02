@@ -16,16 +16,15 @@
 
 NAME =		test
 CC =		gcc
-CFLAGS =	-Wall -Wextra -Wno-unused-result -g -O3 -I../lib/inc -I../inc -lmorphux -DCOMPILE_WITH_TEST -std=c99
+CFLAGS =	-Wall -Wextra -Wno-unused-result -g -O3 -I../lib/inc -I../inc -lmorphux -DCOMPILE_WITH_TEST -std=c99 -ldl
 SRCS =		$(wildcard *.c) $(wildcard ../src/*.c)
 OBJS =		$(SRCS:%.c=%.o)
 OSTYPE =	$(shell uname)
-COVFLAGS =	"-coverage -lgcov"
+COVFLAGS =	-coverage -lgcov
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	make -C ../lib clean test
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L../lib/ -lmorphux
 
 check: $(NAME)

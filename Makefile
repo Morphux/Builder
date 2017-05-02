@@ -34,6 +34,7 @@ $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIB) $(LFLAGS)
 
 coverage:
+	make -C lib fclean test
 	make -C tests fclean coverage
 	gcov -o src/ $(SRCS)
 
