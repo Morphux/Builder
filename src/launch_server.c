@@ -45,7 +45,7 @@ void launch_server(void) {
     int             sockfd = 0,  /* Read on this one */
                     rem_fd = 0,  /* Fd that will be attributed to the client */
                     rval;        /* To stock getaddrinfo() return */
-    u8_t            enable = 1;  /* Int to enable the option in setsockopt */
+    bool            enable = 1;  /* Int to enable the option in setsockopt */
     struct addrinfo hints,       /* Flags of getaddrinfo() */
                     *servinfo,   /* Result of getaddrinfo() */
                     *ptr;        /* Variable used to loop into the linked lst*/
