@@ -16,7 +16,7 @@
 
 NAME =		test
 CC =		gcc
-CFLAGS =	-Wall -Wextra -Wno-unused-result -g -O3 -I../lib/inc -I../inc -lmorphux -DCOMPILE_WITH_TEST -std=c99 -ldl
+CFLAGS =	-Wall -Wextra -Wno-unused-result -g -O3 -I../lib/inc -I../inc -lmorphux -DCOMPILE_WITH_TEST -std=c99
 SRCS =		$(wildcard *.c) $(wildcard ../src/*.c)
 OBJS =		$(SRCS:%.c=%.o)
 OSTYPE =	$(shell uname)
@@ -25,7 +25,7 @@ COVFLAGS =	-coverage -lgcov
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L../lib/ -lmorphux
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L../lib/ -lmorphux -ldl
 
 check: $(NAME)
 	./$(NAME)
