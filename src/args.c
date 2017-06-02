@@ -118,10 +118,17 @@ u32_t flags_get_port(void) {
     return g_flags.port;
 }
 
-bool flags_set_verbose(const char *str) {
+bool flags_inc_verbose(const char *str) {
     (void)str;
     if (g_flags.verbose < FLAGS_VERBOSE_MAX)
         g_flags.verbose++;
+    return true;
+}
+
+/* TODO HERE */
+bool flags_set_verbose(const char *str) {
+    if (str != NULL)
+        g_flags.port = strtoul(str, (char **)NULL, 10);
     return true;
 }
 

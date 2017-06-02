@@ -81,12 +81,12 @@ void launch_server(void) {
             continue ;
         }
         /* If socket succeded, call setsockopt */
-        if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &enable, 
-            sizeof(int)) == 1)
+        if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &enable,
+            sizeof(int)) == -1)
         {
             /* If it fails, cleanup, display the error and exit */
             freeaddrinfo(servinfo);
-            m_panic("Server: socket %s" , strerror(errno));
+            m_panic("Server: setsockopt %s" , strerror(errno));
         }
         /* If we got here, try to bind to the socket */
         if (bind(sockfd, ptr->ai_addr, ptr->ai_addrlen) == -1)
