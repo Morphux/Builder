@@ -18,6 +18,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <builder.h>
+#include <launch_server.h>
 #include <args.h>
 
 #ifndef COMPILE_WITH_TEST
@@ -74,14 +75,30 @@ int main(int ac, char *av[]) {
             .callback = &flags_set_nofork
         },
         {
+            .opt = 'q',
+            .s_opt = "quiet",
+            .desc = "Don't output anything",
+            .callback = &flags_set_quiet
+        },
+        {
+            /* Same features as -d, but here because this is standard */
+            .opt = 'v',
+            .desc = "Increase the verbose level (Up to 3)",
+            .callback = &flags_inc_verbose,
+            .usage = "-v|-vv|-vvv"
+        },
+        {
             .opt = 'd',
-            .desc = "Increase the debug level",
+            .desc = "Increase the verbose level (Up to 3)",
+            .callback = &flags_inc_verbose,
+            .usage = "-d|-dd|-ddd"
         },
         {
             .opt = 'D',
             .s_opt = "set-debug-level",
-            .desc = "Set the debug level",
+            .desc = "Set the verbose level",
             .take_arg = true,
+            .callback = &flags_set_verbose,
             .usage = "[1-3]"
         },
         {
@@ -108,11 +125,6 @@ int main(int ac, char *av[]) {
             .callback = &flags_set_logfile,
             .usage = "LOG_FILE"
         },
-        {
-            .opt = 'v',
-            .desc = "Increase the verbose level (Up to 3)",
-            .callback = &flags_set_verbose
-        },
         ARGS_EOL
     };
     mlist_t     *params = NULL;
@@ -132,6 +144,7 @@ int main(int ac, char *av[]) {
     if (flags_get_nofork() == true)
         daemonize();
 
+    launch_server();
     flags_cleanup();
     return 0;
 }

@@ -31,23 +31,29 @@ typedef struct flags_s {
      * Default: true
      */
     bool            daemonize;
+
+    /**
+     * If defined, don't output anything.
+     * Overrides all logging and output flags
+     * Default: false
+     */
     bool            quiet;
 
     /**
      * Flag that will define the port
      * to listen on.
-     * Default: 6694
+     * Default: 5982
      */
     u32_t           port;
 
     /**
-     * Path of the specified log file, if defined
+     * Path of the specified log file, if defined.
      * Default: NULL
      */
     char            *pid_file;
 
     /**
-     * Path of the specifiedd PID file, if defined
+     * Path of the specified PID file, if defined.
      * Default: NULL
      */
     char            *log_file;
@@ -58,7 +64,7 @@ static flags_t g_flags;
 void flags_init(void) {
     g_flags.verbose = 0;
     g_flags.daemonize = true;
-    g_flags.port = 6694;
+    g_flags.port = 5982;
     g_flags.pid_file = NULL;
     g_flags.log_file = NULL;
 }
@@ -112,10 +118,17 @@ u32_t flags_get_port(void) {
     return g_flags.port;
 }
 
-bool flags_set_verbose(const char *str) {
+bool flags_inc_verbose(const char *str) {
     (void)str;
     if (g_flags.verbose < FLAGS_VERBOSE_MAX)
         g_flags.verbose++;
+    return true;
+}
+
+/* TODO HERE */
+bool flags_set_verbose(const char *str) {
+    if (str != NULL)
+        g_flags.port = strtoul(str, (char **)NULL, 10);
     return true;
 }
 

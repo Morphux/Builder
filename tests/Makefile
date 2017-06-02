@@ -20,13 +20,12 @@ CFLAGS =	-Wall -Wextra -Wno-unused-result -g -O3 -I../lib/inc -I../inc -lmorphux
 SRCS =		$(wildcard *.c) $(wildcard ../src/*.c)
 OBJS =		$(SRCS:%.c=%.o)
 OSTYPE =	$(shell uname)
-COVFLAGS =	"-coverage -lgcov"
+COVFLAGS =	-coverage -lgcov
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	make -C ../lib clean test
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L../lib/ -lmorphux
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -L../lib/ -lmorphux -ldl
 
 check: $(NAME)
 	./$(NAME)
@@ -40,6 +39,8 @@ coverage:
 
 clean:
 	rm -f $(OBJS)
+	rm -f *.gcda
+	rm -f *.gcno
 
 fclean: clean
 	rm -f $(NAME)
